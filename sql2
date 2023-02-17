@@ -1,0 +1,133 @@
+Задание 1
+
+1.
+skypro=# CREATE TABLE city(
+skypro(# city_id BIGSERIAL NOT NULL PRIMARY KEY,
+skypro(# city_name VARCHAR(20) NOT NULL
+skypro(# );
+CREATE TABLE
+
+
+2.
+skypro=# ALTER TABLE employee ADD COLUMN city_id INT;
+ALTER TABLE
+skypro=# SELECT*FROM employee;
+ id | first_name | last_name  | gender | age | city_id
+----+------------+------------+--------+-----+---------
+  3 | Inna       | Vilkina    | female |  23 |
+  6 | Elena      | Kvadratova | female |  25 |
+  1 | Egor       | Pupkin     | male   |  28 |
+  5 | Egor       | Krujkov    | male   |  30 |
+  4 | Inna       | Komarova   | female |  21 |
+(5 °ßdek)
+
+
+3.
+skypro=# ALTER TABLE employee ADD FOREIGN KEY (city_id) REFERENCES city (city_id);
+ALTER TABLE
+
+
+4.
+skypro=# INSERT INTO city(
+skypro(# city_name)
+skypro-# VALUES('Moscow'), ('Tel-Aviv'), ('Prague'),('Berlin'),('Barcelona');
+INSERT 0 5
+
+skypro=# UPDATE employee SET city_id = 1 WHERE last_name = 'Kvadratova';
+UPDATE 1
+skypro=# UPDATE employee SET city_id = 2 WHERE last_name = 'Vilkina';
+UPDATE 1
+skypro=# UPDATE employee SET city_id = 3 WHERE last_name = 'Komarova';
+UPDATE 1
+skypro=# UPDATE employee SET city_id = 4 WHERE last_name = 'Krujkov';
+UPDATE 1
+skypro=# UPDATE employee SET city_id = 5 WHERE last_name = 'Pupkin';
+UPDATE 1
+
+Задание 2
+
+1.
+skypro=# SELECT first_name, last_name, city_name
+skypro-# FROM city
+skypro-# INNER JOIN employee
+skypro-# ON city.city_id = employee.city_id;
+ first_name | last_name  | city_name
+------------+------------+-----------
+ Elena      | Kvadratova | Moscow
+ Inna       | Vilkina    | Tel-Aviv
+ Inna       | Komarova   | Prague
+ Egor       | Krujkov    | Berlin
+ Egor       | Pupkin     | Barcelona
+(5 °ßdek)
+
+skypro=# INSERT INTO city(
+skypro(# city_name)
+skypro-# VALUES ('Paris');
+INSERT 0 1
+
+2.
+skypro=# SELECT city_name, first_name, last_name
+skypro-# FROM city
+skypro-# LEFT JOIN employee
+skypro-# ON city.city_id = employee.city_id;
+ city_name | first_name | last_name
+-----------+------------+------------
+ Moscow    | Elena      | Kvadratova
+ Tel-Aviv  | Inna       | Vilkina
+ Prague    | Inna       | Komarova
+ Berlin    | Egor       | Krujkov
+ Barcelona | Egor       | Pupkin
+ Paris     |            |
+(6 °ßdek)
+
+
+3.
+skypro=# SELECT first_name, city_name
+skypro-# FROM city
+skypro-# FULL JOIN employee
+skypro-# ON city.city_id = employee.city_id;
+ first_name | city_name
+------------+-----------
+ Elena      | Moscow
+ Inna       | Tel-Aviv
+ Inna       | Prague
+ Egor       | Berlin
+ Egor       | Barcelona
+            | Paris
+(6 °ßdek)
+
+
+4.
+skypro=# SELECT first_name, last_name, city_name
+skypro-# FROM city
+skypro-# CROSS JOIN employee;
+ first_name | last_name  | city_name
+------------+------------+-----------
+ Elena      | Kvadratova | Moscow
+ Inna       | Vilkina    | Moscow
+ Inna       | Komarova   | Moscow
+ Egor       | Krujkov    | Moscow
+ Egor       | Pupkin     | Moscow
+ Elena      | Kvadratova | Tel-Aviv
+ Inna       | Vilkina    | Tel-Aviv
+ Inna       | Komarova   | Tel-Aviv
+ Egor       | Krujkov    | Tel-Aviv
+ Egor       | Pupkin     | Tel-Aviv
+ Elena      | Kvadratova | Prague
+ Inna       | Vilkina    | Prague
+ Inna       | Komarova   | Prague
+ Egor       | Krujkov    | Prague
+ Egor       | Pupkin     | Prague
+ Elena      | Kvadratova | Berlin
+ Inna       | Vilkina    | Berlin
+ Inna       | Komarova   | Berlin
+ Egor       | Krujkov    | Berlin
+ Egor       | Pupkin     | Berlin
+ Elena      | Kvadratova | Barcelona
+ Inna       | Vilkina    | Barcelona
+ Inna       | Komarova   | Barcelona
+ Egor       | Krujkov    | Barcelona
+ Egor       | Pupkin     | Barcelona
+ Elena      | Kvadratova | Paris
+ Inna       | Vilkina    | Paris
+-- More  --
